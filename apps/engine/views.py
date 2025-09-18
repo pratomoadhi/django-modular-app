@@ -26,6 +26,7 @@ def module_exists(slug):
     base = os.path.join(settings.BASE_DIR, "modules", slug)
     return os.path.isdir(base)
 
+
 @superuser_required
 def module_index(request):
     modules = Module.objects.all()
@@ -41,7 +42,11 @@ def module_action(request, slug, op):
     module = get_object_or_404(Module, slug=slug)
 
     if not module_exists(slug):
-        messages.error(request, f"Module folder for '{slug}' not found.")
+        messages.error(
+            request,
+            f"Module folder for '{slug}' not found.",
+            extra_tags="module-page-message",
+        )
         return redirect(reverse("engine:index"))
 
     try:
@@ -51,16 +56,26 @@ def module_action(request, slug, op):
             call_command("migrate", app_label)
             module.installed = True
             module.save()
-            messages.success(request, f"{op.capitalize()} succeeded for {module.name}")
+            messages.success(
+                request,
+                f"{op.capitalize()} succeeded for {module.name}",
+                extra_tags="module-page-message",
+            )
         elif op == "uninstall":
             call_command("migrate", app_label, "zero")
             module.installed = False
             module.save()
-            messages.success(request, f"{module.name} successfully uninstalled")
+            messages.success(
+                request,
+                f"{module.name} successfully uninstalled",
+                extra_tags="module-page-message",
+            )
         else:
-            messages.error(request, "Unknown operation.")
+            messages.error(
+                request, "Unknown operation.", extra_tags="module-page-message"
+            )
     except Exception as e:
-        messages.error(request, f"Error: {e}")
+        messages.error(request, f"Error: {e}", extra_tags="module-page-message")
 
     return redirect(reverse("engine:index"))
 

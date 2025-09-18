@@ -4,6 +4,17 @@
 
 {% block content %}
 <h1>Module Engine</h1>
+
+{% if messages %}
+<ul class="alert alert-success">
+    {% for msg in messages %}
+    {% if 'module-page-message' in msg.tags %}
+    <li>{{ msg }}</li>
+    {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
+
 <table border="1" cellpadding="6">
     <tr>
         <th>Slug</th>

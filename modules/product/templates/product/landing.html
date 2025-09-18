@@ -5,9 +5,11 @@
     <h1>Products</h1>
 
     {% if messages %}
-    <ul>
+    <ul class="alert alert-success">
         {% for msg in messages %}
+        {% if 'product-page-message' in msg.tags %}
         <li>{{ msg }}</li>
+        {% endif %}
         {% endfor %}
     </ul>
     {% endif %}

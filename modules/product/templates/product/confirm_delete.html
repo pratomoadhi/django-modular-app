@@ -3,11 +3,13 @@
 {% block title %}Confirm Delete{% endblock %}
 
 {% block content %}
-<h3>Are you sure to delete this data?</h3>
-<p><strong>{{ product.name }}</strong></p>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Yes</button>
-    <a href="{% url 'product:landing' %}">Cancel</a>
-</form>
+<div class="main-container confirm-container">
+    <h3>Are you sure to delete this data?</h3>
+    <p><strong>{{ product.name }}</strong></p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes</button>
+        <a href="{% url 'product:landing' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
 {% endblock %}

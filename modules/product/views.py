@@ -72,7 +72,7 @@ def product_create(request):
         price = request.POST.get("price") or 0
         stock = request.POST.get("stock") or 0
         Product.objects.create(name=name, barcode=barcode, price=price, stock=stock)
-        messages.success(request, "Product created")
+        messages.success(request, "Product created", extra_tags="product-page-message")
         return redirect(reverse("product:landing"))
     return render(request, "product/form.html")
 
@@ -87,7 +87,7 @@ def product_edit(request, pk):
         p.price = request.POST.get("price") or 0
         p.stock = request.POST.get("stock") or 0
         p.save()
-        messages.success(request, "Product updated")
+        messages.success(request, "Product updated", extra_tags="product-page-message")
         return redirect(reverse("product:landing"))
     return render(request, "product/form.html", {"product": p})
 
@@ -98,7 +98,6 @@ def product_delete(request, pk):
     p = get_object_or_404(Product, pk=pk)
     if request.method == "POST":
         p.delete()
-        messages.success(request, "Product deleted")
+        messages.success(request, "Product deleted", extra_tags="product-page-message")
         return redirect(reverse("product:landing"))
     return render(request, "product/confirm_delete.html", {"product": p})
-
