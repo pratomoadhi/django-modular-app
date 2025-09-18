@@ -89,13 +89,7 @@ if ENVIRONMENT == "local":
         }
     }
 else:
-    DATABASES = {
-        "default": dj_database_url.config(
-            default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-            conn_max_age=600,
-            ssl_require=True,
-        )
-    }
+    DATABASES = {"default": dj_database_url.config(default="sqlite:///db.sqlite3")}
 
 
 # Password validation
