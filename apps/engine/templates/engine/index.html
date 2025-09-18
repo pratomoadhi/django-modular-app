@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Module Engine{% endblock %}
+
+{% block content %}
+<h1>Module Engine</h1>
+<table border="1" cellpadding="6">
+    <tr>
+        <th>Slug</th>
+        <th>Name</th>
+        <th>Installed</th>
+        <th>Actions</th>
+    </tr>
+    {% for m in modules %}
+    <tr>
+        <td>{{ m.slug }}</td>
+        <td>{{ m.name }}</td>
+        <td>{{ m.installed }}</td>
+        <td>
+            {% if not m.installed %}
+            <a href="{% url 'engine:action' m.slug 'install' %}">Install</a>
+            {% else %}
+            <a href="/{{ m.slug }}/">Visit</a> |
+            <a href="{% url 'engine:action' m.slug 'upgrade' %}">Upgrade</a> |
+            <a href="{% url 'engine:action' m.slug 'uninstall' %}">Uninstall</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

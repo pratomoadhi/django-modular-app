@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Products</h1>
+
+    {% if messages %}
+    <ul>
+        {% for msg in messages %}
+        <li>{{ msg }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    <div class="mb-3">
+        {% if can_create %}
+        <a href="{% url 'product:create' %}" class="btn btn-success">Create Product</a>
+        {% endif %}
+        {% if can_manage_engine %}
+        <a href="{% url 'engine:index' %}" class="btn btn-secondary">Back to Module Engine</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Barcode</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in products %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ p.name }}</td>
+                <td>{{ p.barcode }}</td>
+                <td>{{ p.price }}</td>
+                <td>{{ p.stock }}</td>
+                <td>
+                    {% if can_update %}
+                    <a href="{% url 'product:edit' p.pk %}" class="btn btn-sm btn-primary">Edit</a>
+                    {% endif %}
+                    {% if can_delete %}
+                    <form action="{% url 'product:delete' p.pk %}" method="post" style="display:inline"
+                        onsubmit="return confirmDelete();">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No products available</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function confirmDelete() {
+        return confirm('Are you sure you want to delete this product?');
+    }
+</script>
+{% endblock %}

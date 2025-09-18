@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}DjApp{% endblock %}</title>
+</head>
+
+<body>
+    <div style="margin-bottom: 20px;">
+        {% if user.is_authenticated %}
+        <span>Logged in as <strong>{{ user.username }}</strong></span> |
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+        {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+    </div>
+
+    {% block content %}{% endblock %}
+</body>
+
+</html>
